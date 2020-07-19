@@ -15,7 +15,7 @@ pipeline {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
                     url: ARTIFACTORY_SERVER_URL,
-                    credentialsId: Artifactory_creds
+                    credentialsId: 'Artifactory_creds'
                 )
             }
         }
