@@ -5,6 +5,10 @@ pipeline {
         ARTIFACTORY_SERVER_URL = "http://localhost:80"
     }
 
+    tools {
+        maven "3.6.0"
+    }
+
     stages {
         stage("Configure Artifactory server") {
             steps {
