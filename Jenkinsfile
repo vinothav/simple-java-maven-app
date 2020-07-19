@@ -23,7 +23,21 @@ pipeline {
         stage("Build the code"){
             steps {
                 sh "mvn -version"
-                sh "mvn clean install"
+                sh "mvn clean compile"
+            }
+        }
+
+        stage("Test the code"){
+            steps {
+                sh "mvn clean test"
+            }
+
+            post {
+                success {
+                    rtPublishBuildInfo (
+                        serverId: "ARTIFACTORY_SERVER"
+                    )
+                }
             }
         }
     }
