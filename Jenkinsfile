@@ -43,7 +43,9 @@ pipeline {
 
         stage("Build and Code Analysis"){
             steps {
+                def scannerhome = tool 'sonar-scanner',
                 withSonarQubeEnv('SonarQubeServer'){
+                    sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=src
                     withMaven(maven:'Maven 3.6.3'){
                         sh 'mvn clean package sonar:sonar'
                     }
