@@ -34,20 +34,31 @@ pipeline {
             }
         }
 
-        stage("Build the code"){
+        // stage("Build the code"){
+        //     steps {
+        //         sh "mvn -version"
+        //         sh "mvn clean compile"
+        //     }
+        // }
+
+        stage("Build and Code Analysis"){
             steps {
-                sh "mvn -version"
-                sh "mvn clean compile"
+                withSonarQubeEnv('SonarQubeServer', credentialsId:'creds'){
+                    withMaven(maven:'Maven 3.6.3'){
+                        sh 'mvn clean package sonar:sonar'
+                    }
+                }
             }
+
         }
 
-        stage("Publish the build info"){
-            steps {
-                rtPublishBuildInfo (
-                    serverId: "ARTIFACTORY_SERVER"
-                )
-            }
-        }
+        // stage("Publish the build info"){
+        //     steps {
+        //         rtPublishBuildInfo (
+        //             serverId: "ARTIFACTORY_SERVER"
+        //         )
+        //     }
+        // }
 
         stage("Test the code"){
             steps {
@@ -55,11 +66,5 @@ pipeline {
             }
 
        }
-    }
-
-    post {
-        always {
-            cleanWs()
-        }
     }
 }
