@@ -34,7 +34,7 @@ pipeline {
 
             post {
                 success {
-                    rtPublishBuildInfo (
+                    rtUpload (
                         serverId: "ARTIFACTORY_SERVER"
                     )
                 }
