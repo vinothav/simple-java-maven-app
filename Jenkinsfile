@@ -14,7 +14,7 @@ pipeline {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
-                    url: "ARTIFACTORY_SERVER_URL",
+                    url: ARTIFACTORY_SERVER_URL,
                     credentialsId: 'Artifactory_creds'
                 )
 
