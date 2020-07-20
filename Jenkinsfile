@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ARTIFACTORY_SERVER_URL = "http://localhost:80"
+        ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory"
     }
 
     tools {
@@ -17,6 +17,20 @@ pipeline {
                     url: ARTIFACTORY_SERVER_URL,
                     credentialsId: 'Artifactory_creds'
                 )
+
+                rtMavenResolver (
+                    id: "MAVEN_RESOLVER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: "libs-release",
+                    snapshotRepo: "libs-snapshot"
+                )   
+
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: "libs-release-local",
+                    snapshotRepo: "libs-snapshot-local"
+                )                             
             }
         }
 
