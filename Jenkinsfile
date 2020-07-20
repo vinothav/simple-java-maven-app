@@ -14,8 +14,9 @@ pipeline {
             steps {
                 rtServer (
                     id: "ARTIFACTORY_SERVER",
-                    url: ARTIFACTORY_SERVER_URL,
-                    credentialsId: 'Artifactory_creds'
+                    url: "http://artifactory:8081/artifactory",
+                    username: 'admin',
+                    password: 'Siva-338;'
                 )
 
                 rtMavenResolver (
