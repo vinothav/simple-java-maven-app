@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ARTIFACTORY_SERVER_URL = "http://localhost:80"
+        ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory"
     }
 
     tools {
