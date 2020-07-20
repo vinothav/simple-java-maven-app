@@ -34,10 +34,14 @@ pipeline {
             }
         }
 
-        stage("Build the code"){
+        stage ('Exec Maven') {
             steps {
-                sh "mvn -version"
-                sh "mvn clean compile"
+                rtMavenRun (
+                    pom: 'simple-java-maven-app/pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
             }
         }
 
