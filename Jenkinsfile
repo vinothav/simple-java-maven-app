@@ -41,19 +41,20 @@ pipeline {
             }
         }
 
+        stage("Publish the build info"){
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+            }
+        }
+
         stage("Test the code"){
             steps {
                 sh "mvn clean test"
             }
-
-            post {
-                success {
-                    rtUpload (
-                        serverId: "ARTIFACTORY_SERVER"
-                    )
-                }
-            }
         }
+
     }
 
     post {
