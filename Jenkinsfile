@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ARTIFACTORY_SERVER_URL = "http://172.18.0.3/artifactory"
+        ARTIFACTORY_SERVER_URL = "http://172.19.0.5/artifactory"
         SONAR_URL = "http://sonar:9000"
         PROJECT_KEY = credentials('java-project-sonar-key')
     }
