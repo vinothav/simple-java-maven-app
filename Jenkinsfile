@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory",
-        SONAR_URL = "http://sonar:9000",
+        SONAR_URL = "http://sonar:9000"
     }
 
     tools {
