@@ -4,7 +4,7 @@ pipeline {
     environment {
         ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory"
         SONAR_URL = "http://sonar:9000"
-        PROJECT-KEY = credentials('java-project-sonar-key')
+        PROJECT_KEY = credentials('java-project-sonar-key')
     }
 
     tools {
@@ -52,7 +52,7 @@ pipeline {
                 stage("Code Analysis") {
                     steps {
                         withSonarQubeEnv('SonarQubeServer'){
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${PROJECT-KEY}'
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${PROJECT_KEY}'
                         }
                    }
                 }
