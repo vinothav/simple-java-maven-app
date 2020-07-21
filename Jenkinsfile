@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory",
+        ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory"
         SONAR_URL = "http://sonar:9000"
     }
 
