@@ -60,7 +60,7 @@ pipeline {
                     steps {
                         withSonarQubeEnv('SonarQubeServer'){
                             withCredentials([string(credentialsId: 'java-project-sonar-key', variable: 'project-key')]) {
-                                sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=SONAR_URL -Dsonar.login=project-key'
+                                sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${project-key}'
                             }
                         }
                    }
