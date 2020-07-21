@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-        stage("Build and Analyse code") {
+        stage("Parallel run of the build and analysis") {
             parallel {
                 stage ('Exec Maven') {
                     steps {
