@@ -34,23 +34,25 @@ pipeline {
             }
         }
 
-        // stage("Build the code"){
-        //     steps {
-        //         sh "mvn -version"
-        //         sh "mvn clean compile"
-        //     }
-        // }
-
-        stage("Build and Code Analysis"){
-            steps {
-                withSonarQubeEnv('SonarQubeServer', credentialsId:'creds'){
-                    withMaven(maven:'Maven 3.6.3'){
-                        sh 'mvn clean package sonar:sonar'
-                    }
-                }
+        stage("Build and analyse code") {
+            parallel {
+                stage("Build the code") {
+                    steps {
+                        sh "mvn -version"
+                        sh "mvn clean compile"
             }
-
         }
+
+                stage("Code Analysis") {
+                    steps {
+                        withSonarQubeEnv('SonarQubeServer'){
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=http://sonar:9000 -Dsonar.login=ec18c57ea6955ff092e82e978f7db757bcf01733'
+                            }
+                   }
+  
+               }
+            } 
+        } 
 
         // stage("Publish the build info"){
         //     steps {
