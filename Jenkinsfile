@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory"
+        ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory",
+        SONAR_URL = "http://sonar:9000",
     }
 
     tools {
@@ -36,31 +37,36 @@ pipeline {
 
         stage("Build and analyse code") {
             parallel {
-                stage("Build the code") {
+                stage ('Exec Maven') {
                     steps {
-                        sh "mvn -version"
-                        sh "mvn clean compile"
+                        rtMavenRun (
+                        pom: 'pom.xml',
+                        goals: 'clean compile',
+                        deployerId: "MAVEN_DEPLOYER",
+                        resolverId: "MAVEN_RESOLVER"
+                )
+            }
+        }
+
+                stage("Publish the build info"){
+                    steps {
+                        rtPublishBuildInfo (
+                        serverId: "ARTIFACTORY_SERVER"
+                )
             }
         }
 
                 stage("Code Analysis") {
                     steps {
                         withSonarQubeEnv('SonarQubeServer'){
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=http://sonar:9000 -Dsonar.login=ec18c57ea6955ff092e82e978f7db757bcf01733'
+                            withCredentials([string(credentialsId: 'java-project-sonar-key', variable: 'project-key')]) {
+                                sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=SONAR_URL -Dsonar.login=project-key'
                             }
+                        }
                    }
-  
-               }
+                }
             } 
         } 
-
-        // stage("Publish the build info"){
-        //     steps {
-        //         rtPublishBuildInfo (
-        //             serverId: "ARTIFACTORY_SERVER"
-        //         )
-        //     }
-        // }
 
         stage("Test the code"){
             steps {
