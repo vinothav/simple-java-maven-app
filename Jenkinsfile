@@ -4,6 +4,7 @@ pipeline {
     environment {
         ARTIFACTORY_SERVER_URL = "http://artifactory/artifactory"
         SONAR_URL = "http://sonar:9000"
+        PROJECT-KEY = credentials('java-project-sonar-key')
     }
 
     tools {
@@ -48,20 +49,10 @@ pipeline {
             }
         }
 
-                stage("Publish the build info"){
-                    steps {
-                        rtPublishBuildInfo (
-                        serverId: "ARTIFACTORY_SERVER"
-                )
-            }
-        }
-
                 stage("Code Analysis") {
                     steps {
                         withSonarQubeEnv('SonarQubeServer'){
-                            withCredentials([string(credentialsId: 'java-project-sonar-key', variable: 'project-key')]) {
-                                sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${project-key}'
-                            }
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=Java-project-1 -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${PROJECT-KEY}'
                         }
                    }
                 }
@@ -74,5 +65,13 @@ pipeline {
             }
 
        }
+
+        stage("Publish the build info"){
+            steps {
+                rtPublishBuildInfo (
+                serverId: "ARTIFACTORY_SERVER"
+                )
+            }
+        }
     }
 }
